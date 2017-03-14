@@ -23,7 +23,7 @@
 static bool InitHttpHandler (struct Handler *handler_p, const UserDetails *user_p);
 
 
-static bool OpenHttpHandler (struct Handler *handler_p, const char * const filename_s, const char * const mode_s);
+static bool OpenHttpHandler (struct Handler *handler_p, Resource *resource_p, MEM_FLAG resource_mem, const char * const mode_s);
 
 static size_t ReadFromHttpHandler (struct Handler *handler_p, void *buffer_p, const size_t length);
 
@@ -47,7 +47,9 @@ static void FreeHttpHandler (struct Handler *handler_p);
 
 static bool IsResourceForHttpHandler (struct Handler *handler_p, const Resource * resource_p);
 
-static bool CalculateHttpInformationFromHttpHandler (struct Handler *handler_p, HttpInformation *info_p);
+
+static bool CalculateHttpInformationFromHttpHandler (struct Handler *handler_p, FileInformation *info_p);
+
 
 
 Handler *GetHandler (const UserDetails *user_p)
@@ -92,8 +94,7 @@ static bool InitHttpHandler (struct Handler *handler_p, const UserDetails * UNUS
 }
 
 
-
-static bool OpenHttpHandler (struct Handler *handler_p, const char * const filename_s, const char * const mode_s)
+static bool OpenHttpHandler (struct Handler *handler_p, Resource *resource_p, MEM_FLAG resource_mem, const char * const mode_s)
 {
 	bool success_flag = false;
 	HttpHandler *http_handler_p = (HttpHandler *) handler_p;
@@ -103,23 +104,24 @@ static bool OpenHttpHandler (struct Handler *handler_p, const char * const filen
 			CloseHttpHandler (handler_p);
 		}
 
-	if (SetUriForCurlTool (http_handler_p -> hh_curl_p, filename_s))
+	if (SetUriForCurlTool (http_handler_p -> hh_curl_p, resource_p -> re_value_s))
 		{
-			FILE *temp_f = tmpfile ();
+			FILE *temp_f = NULL;
+
+			tmpnam (http_handler_p -> hh_local_name_s);
+
+			temp_f = fopen (http_handler_p -> hh_local_name_s, "w");
 
 			if (temp_f)
 				{
 					if (RunCurlTool (http_handler_p -> hh_curl_p))
 						{
-
+							http_handler_p -> hh_local_f = fopen (http_handler_p -> hh_local_name_s, mode_s);
 						}
 
 				}
 		}
 
-
-
-	http_handler_p -> fh_handler_f = fopen (filename_s, mode_s);
 
 	return success_flag;
 }
@@ -144,9 +146,9 @@ static size_t WriteToHttpHandler (struct Handler *handler_p, const void *buffer_
 	size_t res = 0;
 	HttpHandler *http_handler_p = (HttpHandler *) handler_p;
 
-	if (http_handler_p -> fh_handler_f)
+	if (http_handler_p -> hh_local_f)
 		{
-			res = fwrite (buffer_p, 1, length, http_handler_p -> fh_handler_f);
+			res = fwrite (buffer_p, 1, length, http_handler_p -> hh_local_f);
 		}
 
 	return res;
@@ -232,13 +234,15 @@ static const char *GetHttpHandlerDescription (struct Handler *handler_p)
 }
 
 
-static bool CalculateHttpInformationFromHttpHandler (struct Handler *handler_p, HttpInformation *info_p)
+
+static bool CalculateHttpInformationFromHttpHandler (struct Handler *handler_p, FileInformation *info_p)
 {
 	bool success_flag = false;
+	HttpHandler *http_handler_p = (HttpHandler *) handler_p;
 
-	if (handler_p -> ha_filename_s)
+	if (http_handler_p -> hh_local_f)
 		{
-			success_flag = CalculateHttpInformation (handler_p -> ha_filename_s, info_p);
+			success_flag = CalculateFileInformation (http_handler_p -> hh_local_name_s, info_p);
 		}
 
 	return success_flag;

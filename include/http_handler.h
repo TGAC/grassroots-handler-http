@@ -25,7 +25,7 @@
 
 #include "grassroots_http_handler_library.h"
 #include "handler.h"
-#include "curl_tool.h"
+#include "curl_tools.h"
 
 
 /**
@@ -51,6 +51,10 @@ typedef struct HttpHandler
 	 */
 	FILE *hh_local_f;
 
+	/**
+	 * The name of the FILE pointed to by hh_local_f
+	 */
+	char hh_local_name_s [L_tmpnam];
 } HttpHandler;
 
 
