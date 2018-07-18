@@ -1,4 +1,4 @@
-﻿# Http handler {#http_handler}
+﻿# Http handler {#http_handler_guide}
 
 The http handler allows the Grassroots Server to access any resources using the http(s) protocol.
 
