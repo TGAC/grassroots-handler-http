@@ -52,7 +52,7 @@ static bool CalculateHttpInformationFromHttpHandler (struct Handler *handler_p, 
 
 
 
-Handler *GetHandler (const UserDetails *user_p)
+Handler *GetHandler (const UserDetails *user_p, GrassrootsServer *grassroots_p)
 {
 	HttpHandler *handler_p = (HttpHandler *) AllocMemory (sizeof (HttpHandler));
 
