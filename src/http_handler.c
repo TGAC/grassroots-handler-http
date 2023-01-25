@@ -23,7 +23,7 @@
 static bool InitHttpHandler (struct Handler *handler_p, const UserDetails *user_p);
 
 
-static bool OpenHttpHandler (struct Handler *handler_p, Resource *resource_p, MEM_FLAG resource_mem, const char * const mode_s);
+static bool OpenHttpHandler (struct Handler *handler_p, DataResource *resource_p, MEM_FLAG resource_mem, const char * const mode_s);
 
 static size_t ReadFromHttpHandler (struct Handler *handler_p, void *buffer_p, const size_t length);
 
@@ -35,7 +35,7 @@ static bool CloseHttpHandler (struct Handler *handler_p);
 
 static HandlerStatus GetHttpHandlerStatus (struct Handler *handler_p);
 
-static bool IsResourceForHttpHandler (struct Handler *handler_p, const Resource * resource_p);
+static bool IsResourceForHttpHandler (struct Handler *handler_p, const DataResource * resource_p);
 
 static const char *GetHttpHandlerProtocol (struct Handler *handler_p);
 
@@ -45,7 +45,7 @@ static const char *GetHttpHandlerDescription (struct Handler *handler_p);
 
 static void FreeHttpHandler (struct Handler *handler_p);
 
-static bool IsResourceForHttpHandler (struct Handler *handler_p, const Resource * resource_p);
+static bool IsResourceForHttpHandler (struct Handler *handler_p, const DataResource * resource_p);
 
 
 static bool CalculateHttpInformationFromHttpHandler (struct Handler *handler_p, FileInformation *info_p);
@@ -94,7 +94,7 @@ static bool InitHttpHandler (struct Handler *handler_p, const UserDetails * UNUS
 }
 
 
-static bool OpenHttpHandler (struct Handler *handler_p, Resource *resource_p, MEM_FLAG resource_mem, const char * const mode_s)
+static bool OpenHttpHandler (struct Handler *handler_p, DataResource *resource_p, MEM_FLAG resource_mem, const char * const mode_s)
 {
 	bool success_flag = false;
 	HttpHandler *http_handler_p = (HttpHandler *) handler_p;
@@ -203,7 +203,7 @@ static HandlerStatus GetHttpHandlerStatus (struct Handler *handler_p)
 }
 
 
-static bool IsResourceForHttpHandler (struct Handler *handler_p, const Resource * resource_p)
+static bool IsResourceForHttpHandler (struct Handler *handler_p, const DataResource * resource_p)
 {
 	bool match_flag = false;
 
