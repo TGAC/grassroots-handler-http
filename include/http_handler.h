@@ -72,7 +72,7 @@ extern "C"
  * @memberof HttpHandler
  * @ingroup http_handler_group
  */
-HTTP_HANDLER_API Handler *GetHandler (const UserDetails *user_p, GrassrootsServer *grassroots_p);
+HTTP_HANDLER_API Handler *GetHandler (const UserDetails *user_p, struct GrassrootsServer *grassroots_p);
 
 
 /**

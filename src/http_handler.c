@@ -18,7 +18,7 @@
 #include "http_handler.h"
 #include "memory_allocations.h"
 #include "data_resource.h"
-
+#include "grassroots_server.h"
 
 static bool InitHttpHandler (struct Handler *handler_p, const UserDetails *user_p);
 
