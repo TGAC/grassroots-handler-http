@@ -20,7 +20,7 @@
 #include "data_resource.h"
 #include "grassroots_server.h"
 
-static bool InitHttpHandler (struct Handler *handler_p, const UserDetails *user_p);
+static bool InitHttpHandler (struct Handler *handler_p, const User *user_p);
 
 
 static bool OpenHttpHandler (struct Handler *handler_p, DataResource *resource_p, MEM_FLAG resource_mem, const char * const mode_s);
@@ -52,7 +52,7 @@ static bool CalculateHttpInformationFromHttpHandler (struct Handler *handler_p, 
 
 
 
-Handler *GetHandler (const UserDetails *user_p, GrassrootsServer *grassroots_p)
+Handler *GetHandler (const User *user_p, GrassrootsServer *grassroots_p)
 {
 	HttpHandler *handler_p = (HttpHandler *) AllocMemory (sizeof (HttpHandler));
 
@@ -86,7 +86,7 @@ void ReleaseHandler (Handler *handler_p)
 
 
 
-static bool InitHttpHandler (struct Handler *handler_p, const UserDetails * UNUSED_PARAM (user_p))
+static bool InitHttpHandler (struct Handler *handler_p, const User * UNUSED_PARAM (user_p))
 {
 	bool success_flag = true;
 	
